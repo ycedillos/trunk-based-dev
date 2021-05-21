@@ -1,0 +1,50 @@
+sudo: required
+dist: focal
+language: node_js
+services:
+- docker
+addons:
+  apt:
+    packages:
+      - docker
+node_js:
+- lts/*
+branches:
+  only:
+  - main
+  - "/^v\\d+\\.\\d+(\\.\\d+)?(-\\S*)?$/"
+env:
+  global:
+  - DOCKER_IMAGE_NAME=trunk_based_development
+  - COMMIT=${TRAVIS_COMMIT::8}
+  - PATH=$PATH:${HOME}/google-cloud-sdk/bin
+  - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+  - DOCKER_COMPOSE_VERSION=1.29.1
+stages:
+- build
+- merge
+before_install:
+- chmod 764 ci-cd/scripts/docker-build.sh
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+cache:
+  yarn: true
+  directories:
+  - node_modules
+jobs:
+  include:
+  - stage: build
+    if: branch IN (main) AND type = pull_request
+    name: Build
+    install:
+    - node -v
+    - npm i -g yarn
+    - yarn install
+    script:
+    - yarn build
+  - stage: merge
+    if: branch IN (main) AND type = push
+    name: Build Container
+    script: "./ci-cd/scripts/docker-build.sh"
