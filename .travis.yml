@@ -23,6 +23,7 @@ env:
 stages:
 - build
 - merge
+- ci
 before_install:
 - chmod 764 ci-cd/scripts/docker-build.sh
 - sudo rm /usr/local/bin/docker-compose
@@ -47,4 +48,7 @@ jobs:
   - stage: merge
     if: branch IN (main) AND type = push
     name: Build Container
+    script: "./ci-cd/scripts/docker-build.sh"
+  - stage: ci
+    name: Test Build
     script: "./ci-cd/scripts/docker-build.sh"
