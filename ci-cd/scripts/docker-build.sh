@@ -9,8 +9,8 @@ TRAVIS_TAG
 case ${TRAVIS_BRANCH} in
     "main")
 
-        docker build -f ci-cd/docker/Dockerfile \
-               -t $DOCKER_IMAGE_NAME .
+        #docker build -f ci-cd/docker/Dockerfile \
+        #       -t $DOCKER_IMAGE_NAME .
 
 
     ;;

@@ -1,14 +1,14 @@
 sudo: required
 dist: focal
 language: node_js
-services:
-- docker
-addons:
-  apt:
-    packages:
-      - docker
-node_js:
-- lts/*
+#services:
+#- docker
+#addons:
+#  apt:
+#    packages:
+#      - docker
+#node_js:
+#- lts/*
 branches:
   only:
   - main
@@ -26,14 +26,14 @@ stages:
 - ci
 before_install:
 - chmod 764 ci-cd/scripts/docker-build.sh
-- sudo rm /usr/local/bin/docker-compose
-- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-- chmod +x docker-compose
-- sudo mv docker-compose /usr/local/bin
-cache:
-  yarn: true
-  directories:
-  - node_modules
+#- sudo rm /usr/local/bin/docker-compose
+#- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+#- chmod +x docker-compose
+#- sudo mv docker-compose /usr/local/bin
+#cache:
+#  yarn: true
+#  directories:
+#  - node_modules
 jobs:
   include:
   - stage: build
@@ -50,5 +50,6 @@ jobs:
     name: Build Container
     script: "./ci-cd/scripts/docker-build.sh"
   - stage: ci
+    if: tag IS present
     name: Test Build
     script: "./ci-cd/scripts/docker-build.sh"
