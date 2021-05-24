@@ -23,7 +23,6 @@ env:
 stages:
 - build
 - merge
-- ci
 before_install:
 - chmod 764 ci-cd/scripts/docker-build.sh
 - chmod 764 ci-cd/scripts/environment-deployment.sh
@@ -47,10 +46,6 @@ jobs:
     script:
     - yarn build
   - stage: merge
-    if: branch IN (main) AND type = push AND tag IS NOT present
+    if: branch IN (main) AND type = push
     name: Build Container
-    script: "./ci-cd/scripts/docker-build.sh"
-  - stage: ci
-    if: tag IS present
-    name: Test Build
     script: "./ci-cd/scripts/environment-deployment.sh"
