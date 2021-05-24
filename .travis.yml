@@ -52,4 +52,4 @@ jobs:
   - stage: ci
     if: tag IS present
     name: Test Build
-    script: "./ci-cd/scripts/docker-build.sh"
+    script: "./ci-cd/scripts/environment-deployment.sh"
