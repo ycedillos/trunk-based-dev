@@ -20,7 +20,7 @@ then
    export TARGET_ENVIRONMENT=production
 fi
 
-echo "Despliegue exitoso"
+echo "Despliegue con errores"
 
 case ${TARGET_ENVIRONMENT} in
   "qa")
