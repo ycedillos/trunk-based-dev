@@ -46,7 +46,7 @@ jobs:
     script:
     - yarn build
   - stage: merge
-    if: branch IN (main) AND type = push
+    if: branch IN (main) AND type = push AND tag IS NOT present
     name: Build Container
     script: "./ci-cd/scripts/docker-build.sh"
   - stage: ci
