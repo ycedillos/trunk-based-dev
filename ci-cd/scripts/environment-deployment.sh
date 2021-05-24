@@ -24,6 +24,7 @@ echo "Nuevo despliegue"
 echo "commit 1"
 echo "commit 2"
 echo "commit after git tag"
+echo "commit 2 after git tag"
 
 case ${TARGET_ENVIRONMENT} in
   "qa")
