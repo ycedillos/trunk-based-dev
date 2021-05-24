@@ -24,7 +24,6 @@ stages:
 - build
 - merge
 before_install:
-- chmod 764 ci-cd/scripts/docker-build.sh
 - chmod 764 ci-cd/scripts/environment-deployment.sh
 #- sudo rm /usr/local/bin/docker-compose
 #- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
