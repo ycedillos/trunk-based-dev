@@ -23,6 +23,7 @@ env:
 stages:
 - build
 - merge
+- manual_deployment
 before_install:
 - chmod 764 ci-cd/scripts/environment-deployment.sh
 #- sudo rm /usr/local/bin/docker-compose
@@ -45,6 +46,10 @@ jobs:
     script:
     - yarn build
   - stage: merge
-    if: branch IN (main) AND type = push
+    if: branch IN (main) AND type = push AND tag IS NOT present
     name: Build Container
+    script: "./ci-cd/scripts/environment-deployment.sh"
+  - stage: manual_deployment
+    if: tag IS present
+    name: Manual Deployment
     script: "./ci-cd/scripts/environment-deployment.sh"
