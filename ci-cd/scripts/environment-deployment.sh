@@ -22,6 +22,7 @@ fi
 
 echo "Nuevo despliegue"
 echo "commit 1"
+echo "commit 2"
 
 case ${TARGET_ENVIRONMENT} in
   "qa")
