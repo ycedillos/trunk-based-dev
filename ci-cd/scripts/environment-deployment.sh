@@ -20,7 +20,7 @@ then
    export TARGET_ENVIRONMENT=production
 fi
 
-echo "Despliegue corregido"
+echo "Nuevo despliegue"
 
 case ${TARGET_ENVIRONMENT} in
   "qa")
