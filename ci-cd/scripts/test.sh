@@ -23,5 +23,6 @@ echo "TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}"
 git fetch --tags
 git fetch --unshallow
 echo "show name"
-git rev-parse --abbrev-ref HEAD
-#export BRANCH_PRUEBAS=`git rev-parse --abbrev-ref HEAD`
+#git rev-parse --abbrev-ref HEAD
+export BRANCH_PRUEBAS=`git rev-parse --abbrev-ref HEAD`
+echo "BRANCH_PRUEBAS=${BRANCH_PRUEBAS}"
