@@ -28,7 +28,7 @@ export BRANCH_PRUEBAS=`git rev-parse --abbrev-ref HEAD`
 echo "BRANCH_PRUEBAS=${BRANCH_PRUEBAS}"
 
 # Return if we are not in a Pull Request
-[[ "$TRAVIS_PULL_REQUEST" = "false" ]] && return
+#[[ "$TRAVIS_PULL_REQUEST" = "false" ]] && return
 
 GITHUB_PR_URL=https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST
 GITHUB_PR_BODY=$(curl -s $GITHUB_PR_URL 2>/dev/null)
