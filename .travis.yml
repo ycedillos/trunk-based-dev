@@ -39,17 +39,28 @@ jobs:
   - stage: build
     if: branch IN (main) AND type = pull_request
     name: Build
-    install:
-    - node -v
-    - npm i -g yarn
-    - yarn install
+    #install:
+    #- node -v
+    #- npm i -g yarn
+    #- yarn install
     script:
-    - yarn build
+    #- yarn build
+    - echo "Pull Request"
+    - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
+    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
   - stage: merge
     if: branch IN (main) AND type = push AND tag IS NOT present
     name: Build Container
-    script: "./ci-cd/scripts/environment-deployment.sh"
+    script: 
+    # - "./ci-cd/scripts/environment-deployment.sh"
+    - echo "Merge"
+    - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
+    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
   - stage: manual_deployment
     if: tag IS present
     name: Manual Deployment
-    script: "./ci-cd/scripts/environment-deployment.sh"
+    script: 
+    #- "./ci-cd/scripts/environment-deployment.sh"
+    - echo "GIT TAG"
+    - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
+    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
