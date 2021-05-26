@@ -26,6 +26,7 @@ stages:
 - manual_deployment
 before_install:
 - chmod 764 ci-cd/scripts/environment-deployment.sh
+- chmod 764 ci-cd/scripts/test.sh
 #- sudo rm /usr/local/bin/docker-compose
 #- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
 #- chmod +x docker-compose
@@ -39,17 +40,22 @@ jobs:
   - stage: build
     if: branch IN (main) AND type = pull_request
     name: Build
-    install:
-    - node -v
-    - npm i -g yarn
-    - yarn install
+    #install:
+    #- node -v
+    #- npm i -g yarn
+    #- yarn install
     script:
-    - yarn build
+    #- yarn build
+    - "./ci-cd/scripts/test.sh"
   - stage: merge
     if: branch IN (main) AND type = push AND tag IS NOT present
     name: Build Container
-    script: "./ci-cd/scripts/environment-deployment.sh"
+    script: 
+    # - "./ci-cd/scripts/environment-deployment.sh"
+    - "./ci-cd/scripts/test.sh"
   - stage: manual_deployment
     if: tag IS present
     name: Manual Deployment
-    script: "./ci-cd/scripts/environment-deployment.sh"
+    script: 
+    #- "./ci-cd/scripts/environment-deployment.sh"
+    - "./ci-cd/scripts/test.sh"
