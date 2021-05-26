@@ -26,6 +26,7 @@ stages:
 - manual_deployment
 before_install:
 - chmod 764 ci-cd/scripts/environment-deployment.sh
+- chmod 764 ci-cd/scripts/test.sh
 #- sudo rm /usr/local/bin/docker-compose
 #- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
 #- chmod +x docker-compose
@@ -45,22 +46,16 @@ jobs:
     #- yarn install
     script:
     #- yarn build
-    - echo "Pull Request"
-    - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
-    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+    - "./ci-cd/scripts/test.sh"
   - stage: merge
     if: branch IN (main) AND type = push AND tag IS NOT present
     name: Build Container
     script: 
     # - "./ci-cd/scripts/environment-deployment.sh"
-    - echo "Merge"
-    - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
-    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+    - "./ci-cd/scripts/test.sh"
   - stage: manual_deployment
     if: tag IS present
     name: Manual Deployment
     script: 
     #- "./ci-cd/scripts/environment-deployment.sh"
-    - echo "GIT TAG"
-    - echo "TRAVIS_PULL_REQUEST_BRANCH=${TRAVIS_PULL_REQUEST_BRANCH}"
-    - echo "TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+    - "./ci-cd/scripts/test.sh"
