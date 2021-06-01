@@ -21,7 +21,7 @@ echo "TRAVIS_DEBUG_MODE=${TRAVIS_DEBUG_MODE}"
 echo "TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}"
 
 echo "git diff --numstat"
-git diff --numstat
+git diff --numstat main
 
 #git fetch --tags
 #git fetch --unshallow
