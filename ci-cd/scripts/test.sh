@@ -20,9 +20,12 @@ echo "TRAVIS_COMPILER=${TRAVIS_COMPILER}"
 echo "TRAVIS_DEBUG_MODE=${TRAVIS_DEBUG_MODE}"
 echo "TRAVIS_REPO_SLUG=${TRAVIS_REPO_SLUG}"
 
-git fetch --tags
-git fetch --unshallow
-echo "show name"
+echo "git diff --numstat"
+git diff --numstat
+
+#git fetch --tags
+#git fetch --unshallow
+#echo "show name"
 #git rev-parse --abbrev-ref HEAD
-export BRANCH_PRUEBAS=`git rev-parse --abbrev-ref HEAD`
-echo "BRANCH_PRUEBAS=${BRANCH_PRUEBAS}"
+#export BRANCH_PRUEBAS=`git rev-parse --abbrev-ref HEAD`
+#echo "BRANCH_PRUEBAS=${BRANCH_PRUEBAS}"
