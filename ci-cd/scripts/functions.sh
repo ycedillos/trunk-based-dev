@@ -54,11 +54,15 @@ set_secrets () {
 
 get_reserved_ip () {
   export RESERVED_IP=$(gcloud compute addresses describe ${RESERVED_IP_NAME} --global --format="json" | jq .address | sed 's/"//g')
+
+  echo "RESERVED_IP: ${RESERVED_IP}"
 }
 
 install_NGINX_ingress_controller () {
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
+
+  echo "using RESERVED_IP: ${RESERVED_IP}"
 
   helm install kh-nginx-ingress ingress-nginx/ingress-nginx \
               --set controller.service.loadBalancerIP=${RESERVED_IP} \
@@ -66,7 +70,7 @@ install_NGINX_ingress_controller () {
               --set controller.publishService.enabled=true \
               -n ${CHART_NAMESPACE}
 
-  kubectl rollout status -n ${CHART_NAMESPACE} deploy/kh-nginx-ingress  -w --timeout=7m
+  kubectl rollout status -n ${CHART_NAMESPACE} deploy/kh-nginx-ingress-ingress-nginx-controller  -w --timeout=7m
 }
 
 # Required to install Cert Manager Controller. It should be run only once time
