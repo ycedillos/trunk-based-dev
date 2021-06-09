@@ -53,7 +53,7 @@ set_secrets () {
 }
 
 get_reserved_ip () {
-  export RESERVED_IP=$(gcloud compute addresses describe ${RESERVED_IP_NAME} --global --format="json" | jq .address | sed 's/"//g')
+  export RESERVED_IP=$(gcloud compute addresses describe ${RESERVED_IP_NAME} --region=${REGION} --format="json" | jq .address | sed 's/"//g')
 
   echo "RESERVED_IP: ${RESERVED_IP}"
 }
