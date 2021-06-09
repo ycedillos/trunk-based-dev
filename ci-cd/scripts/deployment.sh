@@ -25,3 +25,8 @@ else
   install_custom_resource_definition
   install_cert_manager_controller
 fi 
+
+# for testing
+kubectl create deployment hello-app --image=gcr.io/google-samples/hello-app:1.0 -n kellerhome
+
+kubectl expose deployment hello-app --port=8080 --target-port=8080 -n kellerhome
