@@ -14,6 +14,12 @@ gcp_login () {
   tar -xzf keys.tar.gz
  
   echo "TARGET_ENVIRONMENT: ${TARGET_ENVIRONMENT}"
+
+  echo "ls -la ${TRAVIS_BUILD_DIR}"
+  ls -la ${TRAVIS_BUILD_DIR}
+
+  echo "ls -la ${TRAVIS_BUILD_DIR}/keys"
+  ls -la ${TRAVIS_BUILD_DIR}/keys
   
   gcloud auth activate-service-account --key-file ${TRAVIS_BUILD_DIR}/keys/client-secret-${TARGET_ENVIRONMENT}.json
 
