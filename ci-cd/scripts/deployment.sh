@@ -25,3 +25,10 @@ else
   install_custom_resource_definition
   install_cert_manager_controller
 fi 
+
+# for testing
+kubectl create deployment hello-app --image=gcr.io/google-samples/hello-app:1.0 -n ${CHART_NAMESPACE}
+
+kubectl expose deployment hello-app --port=8080 --target-port=8080 -n ${CHART_NAMESPACE}
+
+kubectl create -f ci-cd/k8s/sample/ingress-resource.yaml -n ${CHART_NAMESPACE}
