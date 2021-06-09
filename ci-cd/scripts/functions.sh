@@ -39,7 +39,7 @@ set_environment () {
 
   if [ "$TRAVIS_BRANCH" = "main" ] # for git push
   then 
-    export TARGET_ENVIRONMENT=development
+    export TARGET_ENVIRONMENT=develop
 
     echo 'Deployment to DEV'
   else
