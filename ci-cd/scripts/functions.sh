@@ -65,11 +65,12 @@ install_NGINX_ingress_controller () {
               --set rbac.create=true \
               --set controller.publishService.enabled=true \
               -n ${CHART_NAMESPACE}
+
+  kubectl rollout status -n ${CHART_NAMESPACE} deploy/kh-nginx-ingress  -w --timeout=7m
 }
 
 # Required to install Cert Manager Controller. It should be run only once time
 install_custom_resource_definition () {
-  kubectl create namespace ${CHART_NAMESPACE}
   kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/${CERT_MANAGER_VERSION}/cert-manager.crds.yaml -n ${CHART_NAMESPACE}
 }
 
@@ -85,6 +86,10 @@ install_cert_manager_controller () {
               --version ${CERT_MANAGER_VERSION}
 
   kubectl rollout status -n ${CERT_MANAGER_NAMESPACE} deploy/cert-manager  -w --timeout=7m
+
+  # wait 20 seconds before deploying the certificate issuer
+  echo 'Sleep 20 seconds'
+  sleep 20
 
   kubectl apply -f ci-cd/k8s/resources/certificate-issuer.yaml
 
