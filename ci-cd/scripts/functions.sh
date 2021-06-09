@@ -61,7 +61,7 @@ install_NGINX_ingress_controller () {
   helm repo update
 
   helm install kh-nginx-ingress ingress-nginx/ingress-nginx \ 
-              -n ${CHART_NAMESPACE} \
+              --namespace ${CHART_NAMESPACE} \
               --set controller.service.loadBalancerIP=${RESERVED_IP} \
               --set rbac.create=true \
               --set controller.publishService.enabled=true
