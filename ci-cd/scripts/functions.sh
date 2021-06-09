@@ -60,11 +60,11 @@ install_NGINX_ingress_controller () {
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
 
-  helm install kh-nginx-ingress ingress-nginx/ingress-nginx \ 
-              -n ${CHART_NAMESPACE} \
+  helm install kh-nginx-ingress ingress-nginx/ingress-nginx \
               --set controller.service.loadBalancerIP=${RESERVED_IP} \
               --set rbac.create=true \
-              --set controller.publishService.enabled=true
+              --set controller.publishService.enabled=true \
+              -n ${CHART_NAMESPACE}
 }
 
 # Required to install Cert Manager Controller. It should be run only once time
