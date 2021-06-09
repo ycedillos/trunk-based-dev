@@ -27,7 +27,7 @@ gcp_login () {
 
   gcloud components install kubectl
 
-  gcloud container clusters get-credentials ${GKE_CLUSTER} --region=${REGION}
+  gcloud container clusters get-credentials ${GKE_CLUSTER} --region=us-central1-f
 }
 
 set_environment () {  
