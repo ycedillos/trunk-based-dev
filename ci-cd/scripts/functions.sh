@@ -95,7 +95,7 @@ install_cert_manager_controller () {
   echo 'Sleep 20 seconds'
   sleep 20
 
-  kubectl apply -f ci-cd/k8s/resources/certificate-issuer.yaml
+  kubectl apply -f ci-cd/k8s/resources/certificate-issuer.yaml -n ${CHART_NAMESPACE}
 
 }
 
