@@ -23,7 +23,7 @@ gcp_login () {
   
   gcloud auth activate-service-account --key-file ${TRAVIS_BUILD_DIR}/keys/client-secret-${TARGET_ENVIRONMENT}.json
 
-  gcloud --quiet config set project ${GCP_PROJECT}
+  gcloud --quiet config set project ${GCP_PROJECT1}
 
   gcloud components install kubectl
 
