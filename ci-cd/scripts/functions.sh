@@ -1,3 +1,5 @@
+#!/bin/bash
+
 install_graphql_scheme_registry () {
   echo "Install schema registry"
 
