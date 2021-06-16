@@ -1,12 +1,5 @@
 dist: xenial
-language: node_js
-node_js:
-- lts/*
-cache:
-  directories:
-    - '$HOME/google-cloud-sdk'
-    - '/tmp/.npm'
-    - '~/.cache'
+language: bash
 branches:
   only:
   - main
@@ -35,6 +28,4 @@ jobs:
     if: branch IN (main) AND type = push
     name: Build Container
     script:
-    - node -v
-    - npm i -g yarn
     - "./ci-cd/scripts/deployment.sh"
