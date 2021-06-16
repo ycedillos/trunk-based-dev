@@ -1,101 +1,19 @@
-# Array of service names
-declare -a StringArray=("kh-media-svc" "kh-agent-svc" "kh-vendor-svc" "kh-profile-sv" "kh-api-gateway" "kh-vendor-web" )
+install_graphql_scheme_registry () {
+  echo "Install schema registry"
 
-install_helm () {
-  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-  chmod 700 get_helm.sh
-  ./get_helm.sh
-}
+  git clone https://github.com/${GRAPHQL_REPO_ORG}/${GRAPHQL_REPO_NAME}.git
+  cd ${GRAPHQL_REPO_NAME}
 
-gcp_login () {
-  curl https://sdk.cloud.google.com | bash -s -- --disable-prompts > /dev/null
-  export PATH=${HOME}/google-cloud-sdk/bin:${PATH}
+  git checkout tags/${GRAPHQL_REPO_TAG} -b work
 
-  tar -xzf keys.tar.gz
- 
-  echo "TARGET_ENVIRONMENT: ${TARGET_ENVIRONMENT}"
+  gcloud auth configure-docker
 
-  echo "ls -la ${TRAVIS_BUILD_DIR}"
-  ls -la ${TRAVIS_BUILD_DIR}
+  docker build -f Dockerfile \
+               --build-arg env=production \
+               -t $DOCKER_IMAGE_NAME .
 
-  echo "ls -la ${TRAVIS_BUILD_DIR}/keys"
-  ls -la ${TRAVIS_BUILD_DIR}/keys
-  
-  gcloud auth activate-service-account --key-file ${TRAVIS_BUILD_DIR}/keys/client-secret-${TARGET_ENVIRONMENT}.json
+  docker tag $DOCKER_IMAGE_NAME $DOCKER_IMAGE_URL:$GRAPHQL_REPO_TAG
 
-  gcloud --quiet config set project ${GCP_PROJECT1}
-
-  gcloud components install kubectl
-
-  gcloud container clusters get-credentials ${GKE_CLUSTER} --region=us-central1-f
-}
-
-set_environment () {  
-  # TRAVIS_BRANCH
-  #   for push builds, or builds not triggered by a pull request, this is the name of the branch.
-  #   for builds triggered by a pull request this is the name of the branch targeted by the pull request.
-  #   for builds triggered by a tag, this is the same as the name of the tag (TRAVIS_TAG)
-
-
-  if [ "$TRAVIS_BRANCH" = "main" ] # for git push
-  then 
-    export TARGET_ENVIRONMENT=develop
-
-    echo 'Deployment to DEV'
-  else
-    echo 'testing'
-  fi
-}
-
-set_secrets () {  
-  
-  echo "example"
-}
-
-get_reserved_ip () {
-  export RESERVED_IP=$(gcloud compute addresses describe ${RESERVED_IP_NAME} --region=${REGION} --format="json" | jq .address | sed 's/"//g')
-
-  echo "RESERVED_IP: ${RESERVED_IP}"
-}
-
-install_NGINX_ingress_controller () {
-  helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-  helm repo update
-
-  echo "using RESERVED_IP: ${RESERVED_IP}"
-
-  helm install kh-nginx-ingress ingress-nginx/ingress-nginx \
-              --set controller.service.loadBalancerIP=${RESERVED_IP} \
-              --set rbac.create=true \
-              --set controller.publishService.enabled=true \
-              -n ${CHART_NAMESPACE}
-
-  kubectl rollout status -n ${CHART_NAMESPACE} deploy/kh-nginx-ingress-ingress-nginx-controller  -w --timeout=7m
-}
-
-# Required to install Cert Manager Controller. It should be run only once time
-install_custom_resource_definition () {
-  kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/${CERT_MANAGER_VERSION}/cert-manager.crds.yaml -n ${CHART_NAMESPACE}
-}
-
-# It should be run only once time
-install_cert_manager_controller () {
-  helm repo add jetstack https://charts.jetstack.io
-  helm repo update
-
-  kubectl create namespace ${CERT_MANAGER_NAMESPACE}
-
-  helm install cert-manager jetstack/cert-manager \
-              --namespace ${CERT_MANAGER_NAMESPACE} \
-              --version ${CERT_MANAGER_VERSION}
-
-  kubectl rollout status -n ${CERT_MANAGER_NAMESPACE} deploy/cert-manager  -w --timeout=7m
-
-  # wait 20 seconds before deploying the certificate issuer
-  echo 'Sleep 20 seconds'
-  sleep 20
-
-  kubectl apply -f ci-cd/k8s/resources/certificate-issuer.yaml -n ${CHART_NAMESPACE}
+  docker push $DOCKER_IMAGE_URL:$GRAPHQL_REPO_TAG
 
 }
-
