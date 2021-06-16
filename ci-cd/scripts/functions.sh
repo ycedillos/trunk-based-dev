@@ -8,11 +8,12 @@ install_graphql_scheme_registry () {
 
   git checkout tags/${GRAPHQL_REPO_TAG} -b work
 
-  gcloud auth configure-docker
+  #gcloud auth configure-docker
 
   docker build -f Dockerfile \
-               --build-arg env=production \
-               -t $DOCKER_IMAGE_NAME .
+              --no-cache \
+              --build-arg env=production \
+              -t $DOCKER_IMAGE_NAME .
 
   docker tag $DOCKER_IMAGE_NAME $DOCKER_IMAGE_URL:$GRAPHQL_REPO_TAG
 
