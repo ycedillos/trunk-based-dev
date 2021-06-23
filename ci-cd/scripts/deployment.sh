@@ -1,10 +1,8 @@
 #!/bin/bash
 
-source ci-cd/scripts/functions.sh
+#source ci-cd/scripts/functions.sh
 
-ls -la /tmp
-id travis
-
-install_graphql_scheme_registry
-
-ls -la /tmp
+echo "TRAVIS_PULL_REQUEST_BRANCH: ${TRAVIS_PULL_REQUEST_BRANCH}"
+echo "TRAVIS_COMMIT: ${TRAVIS_COMMIT}"
+echo "TRAVIS_COMMIT_MESSAGE: ${TRAVIS_COMMIT_MESSAGE}"
+echo "TRAVIS_BRANCH: ${TRAVIS_BRANCH}"

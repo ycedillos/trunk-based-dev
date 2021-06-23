@@ -18,6 +18,7 @@ env:
   - DOCKER_IMAGE_URL=ycedillos/graphql-schema-registry
 stages:
 - merge
+- pull-request
 before_install:
 - openssl aes-256-cbc -K $encrypted_66f446734868_key -iv $encrypted_66f446734868_iv
   -in ci-cd/encrypted/keys.tar.gz.enc -out keys.tar.gz -d
@@ -26,6 +27,11 @@ jobs:
   include:
   - stage: merge
     if: branch IN (main) AND type = push
-    name: Build Container
+    name: On Merge
+    script:
+    - "./ci-cd/scripts/deployment.sh"
+  - stage: pull-request
+    if: branch IN (main) AND type = pull_request
+    name: Pull Request
     script:
     - "./ci-cd/scripts/deployment.sh"
