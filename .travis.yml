@@ -25,7 +25,7 @@ before_install:
 jobs:
   include:
   - stage: pull-request
-    if: branch IN (main) AND type IN (api, cron)
+    if: branch IN (main) AND type IN (push, api, cron)
     name: Pull Request
     script:
     - "./ci-cd/scripts/deployment.sh"
