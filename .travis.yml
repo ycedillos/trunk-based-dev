@@ -26,8 +26,8 @@ env:
 stages:
 - pull-request
 before_install:
-- openssl aes-256-cbc -K $encrypted_66f446734868_key -iv $encrypted_66f446734868_iv
-  -in ci-cd/encrypted/keys.tar.gz.enc -out keys.tar.gz -d
+- openssl aes-256-cbc -K $encrypted_ef8def03dc8f_key -iv $encrypted_ef8def03dc8f_iv
+  -in docker-compose.yaml.enc -out docker-compose.yaml -d
 - chmod 764 ci-cd/scripts/deployment.sh
 jobs:
   include:
